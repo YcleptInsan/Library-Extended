@@ -1,0 +1,29 @@
+@{
+  Layout = "Shared/_layout.cshtml";
+}
+
+@if(@Model["user"] == null)
+{
+  <p>That information you entered is incorrect. <a href="/">Click here</a> to go back!</p>
+}
+else
+{
+  @if(@Model["allBooks"].Count == 0)
+  {
+    <p>There are no books. You can add books above</p>
+  }
+  else
+  {
+    @foreach(var books in @Model["allBooks"])
+    {
+      <p>
+      @books.GetTitle()
+      </p>
+    }
+
+  }
+
+  <p>
+    TEST!
+  </p>
+}

@@ -57,12 +57,12 @@ namespace Library.Objects
       Patrons newPatron = new Patrons("Jenny", 1);
       newPatron.Save();
 
-      Books newBooks = new Books("Of Mice and Men", new DateTime(2017, 05, 06), 1);
+      Books newBooks = new Books("Of Mice and Men", 1);
       newBooks.Save();
 
-      Copies newCopies1 = new Copies(1, 1);
+      Copies newCopies1 = new Copies(1, DateTime.Now, 1);
       newCopies1.Save();
-      Copies newCopies2 = new Copies(1, 1);
+      Copies newCopies2 = new Copies(1, DateTime.Now, 1);
       newCopies2.Save();
 
       newCopies1.AddPatrons(newPatron);

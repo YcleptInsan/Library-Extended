@@ -138,9 +138,8 @@ namespace Library.Objects
       {
         int id = rdr.GetInt32(0);
         string title = rdr.GetString(1);
-        DateTime dueDate = rdr.GetDateTime(2);
 
-        Books newBooks = new Books(title, dueDate, id);
+        Books newBooks = new Books(title, id);
         AllBooks.Add(newBooks);
 
       }

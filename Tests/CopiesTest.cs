@@ -24,7 +24,7 @@ namespace Library.Objects
     [Fact]
     public void Copies_Save_SaveCopiesToDatabase()
     {
-      Copies newCopy = new Copies(10, 1);
+      Copies newCopy = new Copies(1, DateTime.Now, 1);
       newCopy.Save();
 
       List<Copies> controlList = Copies.GetAll();
@@ -36,14 +36,14 @@ namespace Library.Objects
     [Fact]
     public void Copies_AddBook_AddCopiesToPatrons()
     {
-      Copies newCopies = new Copies(1);
+      Copies newCopies = new Copies(1, DateTime.Now, 1);
       newCopies.Save();
-      Books newBook = new Books("Of mice and men", new DateTime(2017, 05, 06), 1);
+      Books newBook = new Books("Of mice and men", 1);
       newBook.Save();
 
-      Patrons newPatrons1 = new Patrons("Jerry", 1);
+      Patrons newPatrons1 = new Patrons("Jerry");
       newPatrons1.Save();
-      Patrons newPatrons2 = new Patrons("Jerry", 2);
+      Patrons newPatrons2 = new Patrons("Jerry");
       newPatrons2.Save();
 
       newCopies.AddPatrons(newPatrons1);
@@ -60,9 +60,9 @@ namespace Library.Objects
     {
       Patrons newPatrons = new Patrons("David", 1);
       newPatrons.Save();
-      Books newBook = new Books("Of mice and men", new DateTime(2017, 05, 06), 1);
+      Books newBook = new Books("Of mice and men", 1);
       newBook.Save();
-      Copies newCopies = new Copies(1);
+      Copies newCopies = new Copies(1, DateTime.Now, 1);
       newCopies.Save();
 
       newCopies.AddPatrons(newPatrons);
@@ -79,14 +79,14 @@ namespace Library.Objects
     public void Copies_Search_SearchAllBooksForBook()
     {
 
-      Books newBook = new Books("Of mice and men", new DateTime(2017, 05, 06), 1);
+      Books newBook = new Books("Of mice and men", 1);
       newBook.Save();
 
-      Books testBook = new Books("Of another world", new DateTime(2017, 05, 06), 1);
+      Books testBook = new Books("Of another world", 1);
       testBook.Save();
-      Books faceBook = new Books("Of dice", new DateTime(2017, 05, 06), 1);
+      Books faceBook = new Books("Of dice", 1);
       faceBook.Save();
-      Books anotherBook = new Books("A whole new world", new DateTime(2017, 05, 06), 1);
+      Books anotherBook = new Books("A whole new world", 1);
       anotherBook.Save();
 
       List<Books> controlBooks = new List<Books>{newBook, testBook, faceBook};

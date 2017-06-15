@@ -35,12 +35,12 @@ namespace Library.Objects
     {
       Authors newAuthors = new Authors("James", 1);
       newAuthors.Save();
-      Books newBook = new Books("Of mice and men", new DateTime(2017, 05, 06), 1);
+      Books newBook = new Books("Of mice and men", 1);
       newBook.Save();
 
-      Books newBooks1 = new Books("Jerry", new DateTime(2017, 05, 06), 1);
+      Books newBooks1 = new Books("Jerry", 1);
       newBooks1.Save();
-      Books newBooks2 = new Books("Jerry",new DateTime(2017, 05, 06), 2);
+      Books newBooks2 = new Books("Jerry", 2);
       newBooks2.Save();
 
       newAuthors.AddBooks(newBooks1);

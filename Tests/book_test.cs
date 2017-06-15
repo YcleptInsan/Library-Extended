@@ -37,8 +37,8 @@ namespace Library.Objects
     [Fact]
     public void Books_Equals_BooksEqualsBooks()
     {
-      Books controlBooks = new Books("Jenny", new DateTime(2016, 06, 05), 1);
-      Books testBooks = new Books("Jenny", new DateTime(2016, 06, 05), 1);
+      Books controlBooks = new Books("Jenny", 1);
+      Books testBooks = new Books("Jenny", 1);
 
       Assert.Equal(controlBooks, testBooks);
     }

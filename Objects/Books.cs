@@ -8,13 +8,11 @@ namespace Library.Objects
   {
     private int _id;
     private string _title;
-    private DateTime _dueDate;
 
-  public Books(string Title, DateTime DueDate, int id = 0)
+  public Books(string Title, int id = 0)
   {
     _id = id;
     _title = Title;
-    _dueDate = DueDate;
   }
   public int GetId()
   {
@@ -24,18 +22,12 @@ namespace Library.Objects
   {
     return _title;
   }
-  public DateTime GetDueDate()
-  {
-    return _dueDate;
-  }
+
   public void SetTitle(string Title)
   {
     _title = Title;
   }
-  public void SetDueDate()
-  {
-    return new DateTime(now).AddDays(14);
-  }
+
 
   public override bool Equals(System.Object otherBooks)
     {
@@ -48,9 +40,8 @@ namespace Library.Objects
         Books newBooks = (Books) otherBooks;
         bool titleEquality = this.GetTitle() == newBooks.GetTitle();
         bool idEquality = this.GetId() == newBooks.GetId();
-        bool dueDateEquality = this.GetDueDate() == newBooks.GetDueDate();
 
-        return (titleEquality && idEquality && dueDateEquality);
+        return (titleEquality && idEquality);
       }
     }
     public static List<Books> GetAll()
@@ -66,9 +57,8 @@ namespace Library.Objects
       {
         int id = rdr.GetInt32(0);
         string title = rdr.GetString(1);
-        DateTime dueDate = rdr.GetDateTime(2);
 
-        Books newBook = new Books(title, dueDate, id);
+        Books newBook = new Books(title, id);
         books.Add(newBook);
       }
 
@@ -88,13 +78,11 @@ namespace Library.Objects
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO books (title, duedate) OUTPUT INSERTED.id VALUES (@Title, @DueDate)", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO books (title) OUTPUT INSERTED.id VALUES (@Title)", conn);
 
       SqlParameter titleParameter = new SqlParameter("@Title", this.GetTitle());
-      SqlParameter dueDateParameter = new SqlParameter("@DueDate", this.GetDueDate());
 
       cmd.Parameters.Add(titleParameter);
-      cmd.Parameters.Add(dueDateParameter);
 
       SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -126,16 +114,14 @@ namespace Library.Objects
 
       int id = 0;
       string title = null;
-      DateTime DueDate = default(DateTime);
 
       while(rdr.Read())
       {
         id = rdr.GetInt32(0);
         title = rdr.GetString(1);
-        DueDate = rdr.GetDateTime(2);
       }
 
-      Books foundBooks  = new Books(title, DueDate, id);
+      Books foundBooks  = new Books(title, id);
 
       if(rdr != null)
       {
@@ -162,7 +148,6 @@ namespace Library.Objects
 
       int id = 0;
       string title = null;
-      DateTime DueDate = default(DateTime);
 
       List<Books> allBooks = new List<Books>{};
 
@@ -170,8 +155,7 @@ namespace Library.Objects
       {
         id = rdr.GetInt32(0);
         title = rdr.GetString(1);
-        DueDate = rdr.GetDateTime(2);
-        Books foundBooks  = new Books(title, DueDate, id);
+        Books foundBooks  = new Books(title, id);
         allBooks.Add(foundBooks);
       }
 

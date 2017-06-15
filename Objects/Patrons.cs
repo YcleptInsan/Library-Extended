@@ -95,7 +95,7 @@ namespace Library.Objects
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO patrons (name) OUTPUT INSERTED.ID values (@PatronsName)", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO patrons (name) OUTPUT INSERTED.id VALUES (@PatronsName)", conn);
 
       SqlParameter nameParameter = new SqlParameter("@PatronsName", this.GetName());
       cmd.Parameters.Add(nameParameter);
@@ -114,6 +114,40 @@ namespace Library.Objects
       {
         conn.Close();
       }
+    }
+
+    public static Patrons login(string nameToFind)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM patrons WHERE name = @Name;", conn);
+      SqlParameter idParam = new SqlParameter("@Name", nameToFind);
+      cmd.Parameters.Add(idParam);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int id = 0;
+      string name = null;
+
+      while(rdr.Read())
+      {
+        id = rdr.GetInt32(0);
+        name = rdr.GetString(1);
+      }
+
+      Patrons foundPatrons  = new Patrons(name, id);
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+
+      return foundPatrons;
     }
 
     public static Patrons Find(int idToFind)
@@ -148,6 +182,6 @@ namespace Library.Objects
       }
 
       return foundPatrons;
-    }    
+    }
   }
 }
