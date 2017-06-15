@@ -1,0 +1,19 @@
+@{
+  Layout = "Shared/_layout.cshtml";
+}
+
+<form action="/catalog" method="post">
+  <div class="form-group">
+    <label for="user-name">Please Enter a User Name</label>
+    <input type="text" name="user-name" class="form-control">
+  </div>
+  <button type="submit" name="button">Login</button>
+</form>
+
+<form action="/" method="post">
+  <div class="form-group">
+    <label for="user-number"></label>
+    <input type="text" name="user-number" class = "form-control">
+  </div>
+  <button type="submit" class="btn button-hover">Create</button>
+</form>

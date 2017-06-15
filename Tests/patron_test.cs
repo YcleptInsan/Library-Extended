@@ -51,25 +51,29 @@ namespace Library.Objects
       Assert.Equal(controlPatrons, testPatrons);
     }
 
-    // [Fact]
-    // public void Course_AddStudent_AddsStudentToCourse()
-    // {
-    //   Course newCourse = new Course("Computer Science", "CS101");
-    //   newCourse.Save();
-    //   Student newStudent1 = new Student("David", new DateTime(2015, 05, 12));
-    //   newStudent1.Save();
-    //   Student newStudent2 = new Student("John", new DateTime(2016, 05, 22));
-    //   newStudent2.Save();
-    //
-    //   newCourse.AddStudent(newStudent1);
-    //   newCourse.AddStudent(newStudent2);
-    //
-    //   List<Student> testList = newCourse.GetStudents();
-    //   List<Student> controlList = new List<Student>{newStudent1, newStudent2};
-    //
-    //   Assert.Equal(controlList, testList);
-    // }
-    //
+    [Fact]
+    public void Patrons_AddCopies_AddsCopiesToPatron()
+    {
+      Patrons newPatron = new Patrons("Jenny", 1);
+      newPatron.Save();
+
+      Books newBooks = new Books("Of Mice and Men", new DateTime(2017, 05, 06), 1);
+      newBooks.Save();
+
+      Copies newCopies1 = new Copies(1, 1);
+      newCopies1.Save();
+      Copies newCopies2 = new Copies(1, 1);
+      newCopies2.Save();
+
+      newCopies1.AddPatrons(newPatron);
+      newCopies2.AddPatrons(newPatron);
+
+      List<Patrons> testList = newCopies1.GetPatronCopies();
+      List<Patrons> controlList = new List<Patrons>{newPatron};
+
+      Assert.Equal(controlList, testList);
+    }
+
     // [Fact]
     // public void Course_Delete_DeleteCourse()
     // {

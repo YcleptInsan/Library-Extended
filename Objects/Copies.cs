@@ -110,7 +110,6 @@ namespace Library.Objects
       cmd.Parameters.Add(patronsIdParam);
       cmd.Parameters.Add(copiesIdParam);
       cmd.ExecuteNonQuery();
-      Console.WriteLine(newPatrons);
 
       if(conn != null)
       {
@@ -149,6 +148,22 @@ namespace Library.Objects
         rdr.Close();
       }
       return AllPatrons;
+    }
+
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM copies WHERE id = @copiesId; DELETE FROM patrons_copies WHERE copies_id = @copiesId;", conn);
+      SqlParameter idParam = new SqlParameter("@copiesId", this.GetId());
+      cmd.Parameters.Add(idParam);
+      cmd.ExecuteNonQuery();
+
+      if(conn != null)
+      {
+        conn.Close();
+      }
     }
 
     public static void DeleteAll()

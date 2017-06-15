@@ -8,16 +8,13 @@ namespace Library.Objects
   {
     private int _id;
     private string _title;
-    private string _author;
     private DateTime _dueDate;
 
-  public Books(string Title, string Author, DateTime DueDate, int BookId, int id = 0)
+  public Books(string Title, DateTime DueDate, int id = 0)
   {
     _id = id;
     _title = Title;
-    _author = Author;
     _dueDate = DueDate;
-
   }
   public int GetId()
   {
@@ -27,13 +24,17 @@ namespace Library.Objects
   {
     return _title;
   }
-  public string GetAuthor()
-  {
-    return _author;
-  }
   public DateTime GetDueDate()
   {
     return _dueDate;
+  }
+  public void SetTitle(string Title)
+  {
+    _title = Title;
+  }
+  public void SetDueDate()
+  {
+    return new DateTime(now).AddDays(14);
   }
 
   public override bool Equals(System.Object otherBooks)
@@ -47,10 +48,9 @@ namespace Library.Objects
         Books newBooks = (Books) otherBooks;
         bool titleEquality = this.GetTitle() == newBooks.GetTitle();
         bool idEquality = this.GetId() == newBooks.GetId();
-        bool authorEquality = this.GetAuthor() == newBooks.GetAuthor();
         bool dueDateEquality = this.GetDueDate() == newBooks.GetDueDate();
 
-        return (titleEquality && idEquality && authorEquality && dueDateEquality);
+        return (titleEquality && idEquality && dueDateEquality);
       }
     }
     public static List<Books> GetAll()
@@ -66,10 +66,9 @@ namespace Library.Objects
       {
         int id = rdr.GetInt32(0);
         string title = rdr.GetString(1);
-        string author = rdr.GetString(2);
-        DateTime dueDate = rdr.GetDateTime(3);
+        DateTime dueDate = rdr.GetDateTime(2);
 
-        Books newBook = new Books(title, author, dueDate, id);
+        Books newBook = new Books(title, dueDate, id);
         books.Add(newBook);
       }
 
@@ -89,14 +88,12 @@ namespace Library.Objects
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO books (title, author, duedate) OUTPUT INSERTED.id VALUES (@Title, @Author, @DueDate)", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO books (title, duedate) OUTPUT INSERTED.id VALUES (@Title, @DueDate)", conn);
 
       SqlParameter titleParameter = new SqlParameter("@Title", this.GetTitle());
-      SqlParameter authorParameter = new SqlParameter("@Author", this.GetAuthor());
       SqlParameter dueDateParameter = new SqlParameter("@DueDate", this.GetDueDate());
 
       cmd.Parameters.Add(titleParameter);
-      cmd.Parameters.Add(authorParameter);
       cmd.Parameters.Add(dueDateParameter);
 
       SqlDataReader rdr = cmd.ExecuteReader();
@@ -129,18 +126,16 @@ namespace Library.Objects
 
       int id = 0;
       string title = null;
-      string author = null;
       DateTime DueDate = default(DateTime);
 
       while(rdr.Read())
       {
         id = rdr.GetInt32(0);
         title = rdr.GetString(1);
-        author = rdr.GetString(2);
-        DueDate = rdr.GetDateTime(3);
+        DueDate = rdr.GetDateTime(2);
       }
 
-      Books foundBooks  = new Books(title, author, DueDate, id);
+      Books foundBooks  = new Books(title, DueDate, id);
 
       if(rdr != null)
       {
@@ -154,12 +149,50 @@ namespace Library.Objects
       return foundBooks;
     }
 
+    public static List<Books> Search(string test)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM books WHERE title LIKE @TitleName", conn);
+      SqlParameter idParam = new SqlParameter("@TitleName", test + "%");
+      cmd.Parameters.Add(idParam);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int id = 0;
+      string title = null;
+      DateTime DueDate = default(DateTime);
+
+      List<Books> allBooks = new List<Books>{};
+
+      while(rdr.Read())
+      {
+        id = rdr.GetInt32(0);
+        title = rdr.GetString(1);
+        DueDate = rdr.GetDateTime(2);
+        Books foundBooks  = new Books(title, DueDate, id);
+        allBooks.Add(foundBooks);
+      }
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+
+      return allBooks;
+    }
+
     public void Delete()
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("DELETE FROM books WHERE id = @BookId; DELETE FROM patrons_books WHERE books_id = @BookId;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM books WHERE id = @BookId; DELETE FROM book_authors WHERE book_id = @BookId;", conn);
       SqlParameter idParam = new SqlParameter("@BookId", this.GetId());
       cmd.Parameters.Add(idParam);
       cmd.ExecuteNonQuery();

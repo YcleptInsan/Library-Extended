@@ -27,18 +27,18 @@ namespace Library.Objects
     //   Books newBooks = new Books("Jenny", "Jenny", new DateTime(2016, 06, 05), 1);
     //   newBooks.Save();
     //
-    //   // Console.WriteLine(newBooks.GetId());
+    //   Console.WriteLine(newBooks.GetId());
+    //   Console.WriteLine(Books.GetAll()[0].GetId());
     //
     //   Books testBooks = Books.GetAll()[0];
-    //   // Console.WriteLine(testBooks.GetId());
     //   Assert.Equal(newBooks, testBooks);
     // }
 
     [Fact]
     public void Books_Equals_BooksEqualsBooks()
     {
-      Books controlBooks = new Books("Jenny","Jenny", new DateTime(2016, 06, 05), 1);
-      Books testBooks = new Books("Jenny", "Jenny", new DateTime(2016, 06, 05), 1);
+      Books controlBooks = new Books("Jenny", new DateTime(2016, 06, 05), 1);
+      Books testBooks = new Books("Jenny", new DateTime(2016, 06, 05), 1);
 
       Assert.Equal(controlBooks, testBooks);
     }
@@ -50,6 +50,11 @@ namespace Library.Objects
     //   controlBooks.Save();
     //
     //   Books testBooks = Books.Find(controlBooks.GetId());
+    //
+    //   if(testBooks.GetId() == controlBooks.GetId())
+    //   {
+    //     Console.WriteLine("TESTING!!!!!!!!!!");
+    //   }
     //
     //   Assert.Equal(controlBooks, testBooks);
     // }
